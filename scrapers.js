@@ -160,7 +160,7 @@ function display_reddit_post(post, subreddit) {
   details.className = "details";
 
   let comment_link = document.createElement("a");
-  comment_link.href = post.permalink;
+  comment_link.href = "http://www.reddit.com" + post.permalink;
   comment_link.className = "no_underline";
 
   document.getElementById(subreddit + "_posts").appendChild(wrapper);
