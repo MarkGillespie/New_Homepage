@@ -7,10 +7,9 @@
   <!-- Set size on mobile -->
   <!-- https://stackoverflow.com/questions/16387400/getting-the-right-font-size-on-every-mobile-device/16387418 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
   <title>Home</title>
 </head>
-<body onload="getBackground();load_posts();">
+<body onload="load_posts();">
 <!--Add buttons to initiate auth sequence and sign out-->
 <button id="authorize_button" style="display: none;">Authorize</button>
 <button id="signout_button" style="display: none;">Sign Out</button>
@@ -52,7 +51,6 @@
     </div>
   </div>
 
-
   <!-- List Sorting -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
   <script type = "text/javascript" src = "backgrounds.json"></script>
@@ -81,7 +79,7 @@
   <script type="text/javascript">
     function google_sheets_initial_call() {
       load_sheet_data();
-    }; 
+    };
   </script>
 </body>
 </html>

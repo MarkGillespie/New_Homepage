@@ -8,6 +8,13 @@ body {
   -o-background-size: cover;
 }
 
+button {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-width: 0;
+  cursor: pointer;
+  float:right;
+}
+
 #overlay{
   position:absolute;
   top:0;
@@ -22,18 +29,18 @@ body {
 .fade {
   transition: opacity .25s ease-in-out;
   -moz-transition: opacity .25s ease-in-out;
-  -webkit-transition: opacity .25s ease-in-out; 
+  -webkit-transition: opacity .25s ease-in-out;
 }
 
 
 a.no_underline {
-  text-decoration: none;  
+  text-decoration: none;
 }
 
 .post_area {
   height: 95vh;
   width: 48%;
-  background-color:rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
   padding: 1vw;
   margin: 1%;
   float: right;
@@ -53,7 +60,7 @@ a.no_underline {
 .wide_area {
   max-height: 95vh;
   width: 46vw;
-  background-color:rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
   padding: 1vw;
   margin: 1vw;
   float: left;
@@ -63,7 +70,7 @@ a.no_underline {
 }
 
 .wide_area .section_header {
-  flex: 0 1 auto; 
+  flex: 0 1 auto;
 }
 
 .wide_area .list_wrapper {
@@ -123,7 +130,7 @@ a.no_underline {
 
 .reddit_header {
   background-color: orangered;
-  border-top: 0.25em solid #FF8540;   
+  border-top: 0.25em solid #FF8540;
 }
 
 .notes_header {
