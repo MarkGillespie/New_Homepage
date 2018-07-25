@@ -86,31 +86,6 @@ function appendPre(message) {
   console.log(message);
 }
 
-/**
- * Print the names and majors of students in a sample spreadsheet:
- * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
- */
-function listMajors() {
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: '1iBMVMUCkargJfssoeFJf-LmugebBcOtOOvXS4TDQGoY',
-    range: 'TODO!A2:C',
-  }).then(function(response) {
-    let range = response.result;
-    if (range.values.length > 0) {
-      for (i = 0; i < range.values.length; i++) {
-        let row = range.values[i];
-        // Print columns A and E, which correspond to indices 0 and 4.
-        appendPre(row[0] + ', ' + row[2]);
-      }
-    } else {
-      appendPre('No data found.');
-    }
-  }, function(response) {
-    appendPre('Error: ' + response.result.error.message);
-  });
-}
-
-
 // https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript
 function getJSON(url, options) {
   let message = "";
@@ -222,39 +197,37 @@ function display_note(note) {
 }
 
 function display_todo(id, date, task) {
-  if (todo.done == 0) {
-    let li = document.createElement("li");
-    li.className = "post draggable_post";
+  let li = document.createElement("li");
+  li.className = "post draggable_post";
 
-    let handle = document.createElement("div");
-    handle.className = "todo_handle";
+  let handle = document.createElement("div");
+  handle.className = "todo_handle";
 
-    let text = document.createElement("div");
-    text.className = "todo_content";
-    text.innerHTML = task;
+  let text = document.createElement("div");
+  text.className = "todo_content";
+  text.innerHTML = task;
 
-    let button = document.createElement("button");
-    button.className = "button";
-    button.innerHTML = "Edit";
-    button.addEventListener("click", function() {
-      window.location = "edit_todo.html?id=" + id;
-    });
+  let button = document.createElement("button");
+  button.className = "button";
+  button.innerHTML = "Edit";
+  button.addEventListener("click", function() {
+    window.location = "edit_todo.html?id=" + id;
+  });
 
-    let checkbox = document.createElement("div");
-    checkbox.className = "todo_checkbox";
-    let label = document.createElement("label");
-    checkbox.appendChild(label);
-    checkbox.addEventListener("click", function() {
-      add_todo(todo.text, todo.id, "TRUE");
-      document.getElementById("todo_list").removeChild(li);
-    });
+  let checkbox = document.createElement("div");
+  checkbox.className = "todo_checkbox";
+  let label = document.createElement("label");
+  checkbox.appendChild(label);
+  checkbox.addEventListener("click", function() {
+    add_todo(todo.text, todo.id, "TRUE");
+    document.getElementById("todo_list").removeChild(li);
+  });
 
-    document.getElementById("todo_list").appendChild(li);
-    li.appendChild(handle);
-    li.appendChild(text);
-    text.appendChild(checkbox);
-    li.appendChild(button);
-  }
+  document.getElementById("todo_list").appendChild(li);
+  li.appendChild(handle);
+  li.appendChild(text);
+  text.appendChild(checkbox);
+  li.appendChild(button);
 }
 
 function load_data(table_name, div_name, handle_name, display) {
@@ -300,6 +273,13 @@ function load_todos() {
           display_todo(row[0], row[1], row[3]);
         }
       }
+      renderMathInElement(document.getElementById("todo_list"), katex_options);
+
+      make_sortable(document.getElementById("todo_list"), "todo_handle");
+
+      /* Fades list in. List must start invisible */
+      document.getElementById("todo_list").style.opacity = 1.0;
+
     } else {
       appendPre('No data found.');
     }
@@ -309,7 +289,6 @@ function load_todos() {
 }
 
 function load_from_server() {
-    console.log('loading_from_server');
   load_notes();
   load_todos();
 }
