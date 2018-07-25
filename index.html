@@ -10,9 +10,6 @@
   <title>Home</title>
 </head>
 <body onload="load_posts();">
-<!--Add buttons to initiate auth sequence and sign out-->
-<button id="authorize_button" style="display: none;">Authorize</button>
-<button id="signout_button" style="display: none;">Sign Out</button>
   <div id="overlay" class="fade"></div>
 
   <div id="notes" class="wide_area">
@@ -49,6 +46,12 @@
                         </a>
       <div id="hackernews_posts" class="list_wrapper invisible fade"></div>
     </div>
+  </div>
+
+  <div class="footer">
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
   </div>
 
   <!-- List Sorting -->

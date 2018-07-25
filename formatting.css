@@ -32,13 +32,18 @@ button {
   -webkit-transition: opacity .25s ease-in-out;
 }
 
+.footer {
+  float: left;
+  width: 100%;
+}
+
 
 a.no_underline {
   text-decoration: none;
 }
 
 .post_area {
-  height: 95vh;
+  height: 94vh;
   width: 48%;
   background-color: rgba(255, 255, 255, 0.3);
   padding: 1vw;
@@ -59,7 +64,7 @@ a.no_underline {
 }
 
 .wide_area {
-  max-height: 95vh;
+  max-height: 94vh;
   width: 46vw;
   background-color: rgba(255, 255, 255, 0.3);
   padding: 1vw;
@@ -79,7 +84,6 @@ a.no_underline {
 }
 
 .group {
-  max-height: 95vh;
   width: 46vw;
   padding: 0;
   margin: 1vw;
