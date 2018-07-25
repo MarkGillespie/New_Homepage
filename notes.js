@@ -52,7 +52,9 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
-    load_todos();
+
+    // Defined in javascript on various pages
+    google_sheets_initial_call();
   } else {
     authorizeButton.style.display = 'block';
     signoutButton.style.display = 'none';
@@ -86,54 +88,6 @@ function appendPre(message) {
   console.log(message);
 }
 
-// https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript
-function getJSON(url, options) {
-  let message = "";
-  let callback = function(status, response) {};
-  if ('message' in options) {
-    message = options.message;
-  }
-  if ('callback' in options) {
-    callback = options.callback;
-  }
-
-  let xhr = new XMLHttpRequest();
-  xhr.open('GET', url + "?" + message, true);
-  xhr.responseType = 'json';
-  xhr.onload = function() {
-    let status = xhr.status;
-    if (status === 200) {
-      callback(null, xhr.response);
-    } else {
-      callback(status, xhr.response);
-    }
-  };
-  xhr.send();
-}
-
-function sendPOST(url, options) {
-  let message = "";
-  let callback = function(status, response) {};
-  if ('message' in options) {
-    message = options.message;
-  }
-  if ('callback' in options) {
-    callback = options.callback;
-  }
-
-  let xhr = new XMLHttpRequest();
-  xhr.open("POST", url, true);
-  xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  xhr.onreadystatechange = function() {
-    if (xhr.status === 200 && this.readyState == XMLHttpRequest.DONE) {
-      callback(null, xhr.response);
-    } else {
-      callback(xhr.status, xhr.response);
-    }
-  };
-  xhr.send(message);
-}
-
 function make_sortable(el, my_handle) {
   Sortable.create(el, {
     group: "localStorage-example",
@@ -161,10 +115,14 @@ function make_sortable(el, my_handle) {
   });
 }
 
+let note_sheet_id = '1iBMVMUCkargJfssoeFJf-LmugebBcOtOOvXS4TDQGoY';
 let todo_sheet_id = '1iBMVMUCkargJfssoeFJf-LmugebBcOtOOvXS4TDQGoY';
-let todo_sheet_range = 'TODO!A2:D';
+let note_sheet_name = "Notes";
+let todo_sheet_name = "TODO";
+let note_sheet_range = note_sheet_name + '!A2:C';
+let todo_sheet_range = todo_sheet_name + '!A2:C';
 
-function display_note(note) {
+function display_note(row, note_text) {
   // <li class="post note_post draggable_post">
   //  <div class="note_handle"> </div>
   //  <div class="note_content">
@@ -181,13 +139,13 @@ function display_note(note) {
 
   let text = document.createElement("div");
   text.className = "note_content";
-  text.innerHTML = note.text;
+  text.innerHTML = note_text;
 
   let button = document.createElement("button");
   button.className = "button";
   button.innerHTML = "Edit";
   button.addEventListener("click", function() {
-    window.location = "edit_note.html?id=" + note.id;
+    window.location = "edit_note.html?row=" + row;
   });
 
   document.getElementById("note_list").appendChild(li);
@@ -196,7 +154,7 @@ function display_note(note) {
   li.appendChild(button);
 }
 
-function display_todo(id, date, task) {
+function display_todo(row, date, task) {
   let li = document.createElement("li");
   li.className = "post draggable_post";
 
@@ -211,7 +169,7 @@ function display_todo(id, date, task) {
   button.className = "button";
   button.innerHTML = "Edit";
   button.addEventListener("click", function() {
-    window.location = "edit_todo.html?id=" + id;
+    window.location = "edit_todo.html?row=" + row;
   });
 
   let checkbox = document.createElement("div");
@@ -219,7 +177,7 @@ function display_todo(id, date, task) {
   let label = document.createElement("label");
   checkbox.appendChild(label);
   checkbox.addEventListener("click", function() {
-    add_todo(todo.text, todo.id, "TRUE");
+    update_todo(row, task, "Yes");
     document.getElementById("todo_list").removeChild(li);
   });
 
@@ -230,65 +188,61 @@ function display_todo(id, date, task) {
   li.appendChild(button);
 }
 
-function load_data(table_name, div_name, handle_name, display) {
-  let process_notes = function(err, notes) {
-    if (err !== null) {
-      alert("Something went wrong: " + err);
-    } else {
-      for (let note in notes) {
-        display(notes[note]);
-      }
-      renderMathInElement(document.getElementById(div_name), katex_options);
+function get_google_sheet(sheet_id, sheet_range, row_handler, final_fn) {
 
-      make_sortable(document.getElementById(div_name), handle_name);
+  let response_handler = function(response) {
+    let range = response.result;
+    for (let i = 0; i < range.values.length; i++) {
+      row_handler(i+2, range.values[i]);
+    }
+    final_fn();
+  };
 
-      /* list must start invisible */
-      document.getElementById(div_name).style.opacity = 1.0;
+  let error_handler = function(response) {
+    appendPre('Error: ' + response.result.error.message);
+  };
+
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: sheet_id,
+    range: sheet_range,
+  }).then(response_handler, error_handler);
+}
+
+function load_notes() {
+  let row_handler = function(row_index, row_contents) {
+    if (row_contents[1] != "Yes") {
+      display_note(row_index, row_contents[2]);
     }
   };
 
-  getJSON("get_notes.php", {
-    callback:process_notes,
-    message:generate_query_string({table:table_name})
-  });
-}
+  let final_fn = function() {
+      renderMathInElement(document.getElementById("note_list"), katex_options);
+      make_sortable(document.getElementById("note_list"), "note_handle");
+      /* Fades list in. List must start invisible */
+      document.getElementById("note_list").style.opacity = 1.0;
+  };
 
-/* Sortable needs to run after page load for some reason.
- * So I call load_notes in the html page. */
-function load_notes() {
-  load_data("notes_list", "note_list", ".note_handle", display_note);
+  get_google_sheet(note_sheet_id, note_sheet_range, row_handler, final_fn);
 }
 
 function load_todos() {
-  console.log('loading_todos');
-  gapi.client.sheets.spreadsheets.values.get({
-    spreadsheetId: todo_sheet_id,
-    range: todo_sheet_range,
-  }).then(function(response) {
-    let range = response.result;
-    if (range.values.length > 0) {
-      for (i = 0; i < range.values.length; i++) {
-        let row = range.values[i];
-        if(row[2] != "Yes") {
-          display_todo(row[0], row[1], row[3]);
-        }
-      }
-      renderMathInElement(document.getElementById("todo_list"), katex_options);
-
-      make_sortable(document.getElementById("todo_list"), "todo_handle");
-
-      /* Fades list in. List must start invisible */
-      document.getElementById("todo_list").style.opacity = 1.0;
-
-    } else {
-      appendPre('No data found.');
+  let row_handler = function(row_index, row_contents) {
+    if (row_contents[1] != "Yes") {
+      display_todo(row_index, row_contents[0], row_contents[2]);
     }
-  }, function(response) {
-    appendPre('Error: ' + response.result.error.message);
-  });
+  };
+
+  let final_fn = function() {
+    renderMathInElement(document.getElementById("todo_list"), katex_options);
+    make_sortable(document.getElementById("todo_list"), "todo_handle");
+    /* Fades list in. List must start invisible */
+    document.getElementById("todo_list").style.opacity = 1.0;
+  };
+
+  get_google_sheet(todo_sheet_id, todo_sheet_range, row_handler, final_fn);
 }
 
-function load_from_server() {
+function load_sheet_data() {
   load_notes();
   load_todos();
 }
@@ -302,20 +256,71 @@ function generate_query_string(obj) {
   return query_string.substring(1);
 }
 
-function add_data(query) {
-  console.log(query);
-  sendPOST("add_note.php", {message:generate_query_string(query)});
+function insert_new_row(sheet_id, sheet_range, values) {
+  let params = {
+    spreadsheetId: sheet_id,
+    range: sheet_range,
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS"
+  };
+
+  let date = new Date().toJSON().slice(0,10).replace(/-/g, '/');
+  console.log(date);
+
+  let value_range_body = {
+    majorDimension: "ROWS",
+    values: [[date].concat(values)]
+  };
+
+  gapi.client.sheets.spreadsheets.values.append(params, value_range_body).then(
+    function(response) {},
+    function(response) {
+        appendPre('Error: ' + response.result.error.message);
+  });
+
 }
 
-function add_todo(my_text, my_id, is_done) {
-  my_id = my_id || -1;
-  is_done = is_done || "FALSE";
-  add_data({table:"todo_list", text:my_text, id:my_id, done:is_done});
+function create_new_note(my_text) {
+  insert_new_row(note_sheet_id, note_sheet_range, ["No", my_text]);
 }
 
-function add_note(my_text, my_id) {
-  my_id = my_id || -1;
-  add_data({table:"notes_list", text:my_text, id:my_id});
+function create_new_todo(my_text) {
+  insert_new_row(todo_sheet_id, todo_sheet_range, ["No", my_text]);
+}
+
+function update_sheet(sheet_id, sheet_name, row, values) {
+  let last_col = String.fromCharCode(64 + values.length + 1);
+    // 65 is the ASCII code for 'A'
+    // + 1 because we don't include the date in the 'values' list
+  let my_range = sheet_name + "!A" + row + ":" + last_col + row;
+  let params = {
+    spreadsheetId: sheet_id,
+    range: my_range,
+    valueInputOption: "USER_ENTERED"
+  };
+
+  let date = new Date().toJSON().slice(0,10).replace(/-/g, '/');
+  console.log(date);
+
+  let value_range_body = {
+    range: my_range,
+    majorDimension: "ROWS",
+    values: [[date].concat(values)]
+  };
+
+  gapi.client.sheets.spreadsheets.values.update(params, value_range_body).then(
+    function(response) {},
+    function(response) {
+        appendPre('Error: ' + response.result.error.message);
+  });
+}
+
+function update_note(row, my_text, deleted) {
+  update_sheet(note_sheet_id, note_sheet_name, row, [deleted, my_text]);
+}
+
+function update_todo(row, my_text, is_done) {
+  update_sheet(todo_sheet_id, todo_sheet_name, row, [is_done, my_text]);
 }
 
 function parse_query_string() {
@@ -329,57 +334,52 @@ function parse_query_string() {
     return query;
 }
 
-function load_editing_data(table_name, preview) {
+function load_editing_todo() {
   let vars = parse_query_string();
-  if ('id' in vars) {
-    let process_notes = function(err, notes) {
-      if (err !== null) {
-        alert("Something went wrong: " + err);
-      } else {
-        for (let note in notes) {
-          if (notes[note].id == vars.id) {
-            document.getElementById("text").value = notes[note].text;
-            preview();
-          }
-        }
-      }
+  let row_handler = function(row_index, row_contents) {
+    if (row_index == vars.row) {
+      document.getElementById("text").value = row_contents[2];
+      preview_todo();
     }
+  };
+  let final_fn = function() {};
 
-    getJSON("get_notes.php", {
-      callback:process_notes,
-      message: generate_query_string({table:table_name})
-    });
-  }
+  get_google_sheet(todo_sheet_id, todo_sheet_range, row_handler, final_fn);
 }
 
 function load_editing_note() {
-  load_editing_data("notes_list", preview_note);
-}
-
-function load_editing_todo() {
-  load_editing_data("todo_list", preview_todo);
-}
-
-function delete_data(table_name) {
   let vars = parse_query_string();
-  if ('id' in vars) {
-    let query = {table:table_name, id: vars.id, delete: "true"};
-    sendPOST("add_note.php", {message:generate_query_string(query)});
-  }
-  window.location = "index.html";
+  let row_handler = function(row_index, row_contents) {
+    if (row_index == vars.row) {
+      document.getElementById("text").value = row_contents[2];
+      preview_note();
+    }
+  };
+  let final_fn = function() {};
+
+  get_google_sheet(note_sheet_id, note_sheet_range, row_handler, final_fn);
 }
 
 function delete_note() {
-  delete_data("notes_list");
+  let vars = parse_query_string();
+  let text = document.getElementById("text").value;
+  update_note(vars.row, text, "Yes");
+}
+
+function delete_todo() {
+  let vars = parse_query_string();
+  let text = document.getElementById("text").value;
+  update_todo(vars.row, text, "Yes");
 }
 
 function save_note() {
   let vars = parse_query_string();
+  console.log(vars);
   let text = document.getElementById("text").value;
-  if ('id' in vars) {
-    add_note(text, vars.id);
+  if ('row' in vars) {
+    update_note(vars.row, text, "No");
   } else {
-    add_note(text);
+    create_new_note(text);
   }
   preview_note();
 }
@@ -387,10 +387,10 @@ function save_note() {
 function save_todo() {
   let vars = parse_query_string();
   let text = document.getElementById("text").value;
-  if ('id' in vars) {
-    add_todo(text, vars.id);
+  if ('row' in vars) {
+    update_todo(vars.row, text, "No");
   } else {
-    add_todo(text);
+    create_new_todo(text);
   }
   preview_todo();
 }

@@ -1,5 +1,29 @@
 /* Depends on notes.js */
 
+// https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript
+function getJSON(url, options) {
+  let message = "";
+  let callback = function(status, response) {};
+  if ('message' in options) {
+    message = options.message;
+  }
+  if ('callback' in options) {
+    callback = options.callback;
+  }
+  let xhr = new XMLHttpRequest();
+  xhr.open('GET', url + "?" + message, true);
+  xhr.responseType = 'json';
+  xhr.onload = function() {
+    let status = xhr.status;
+    if (status === 200) {
+      callback(null, xhr.response);
+    } else {
+      callback(status, xhr.response);
+    }
+  };
+  xhr.send();
+}
+
 function time_ago(utc /* time in milliseconds */){
   let now = new Date();
   let then = new Date(utc);

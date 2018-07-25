@@ -2,37 +2,19 @@
 <html>
 <head>
   <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700|Josefin+Sans:300,300i,400,400i,600,600i,700,700i' rel='stylesheet'/>
-
-  <!-- List Sorting -->
-  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
-
-  <script type = "text/javascript" src = "backgrounds.json"></script>
-  <script type = "text/javascript" src = "utils.js"></script>
-  <script type = "text/javascript" src = "notes.js"></script>
   <link rel="stylesheet" type="text/css" href="formatting.css">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css"/>
-  <script type="text/javascript">
-    let katex_options = new Object();
-    katex_options.delimiters =  [
-      {left: "$", right: "$", display: false},
-      {left: "$$", right: "$$", display: true},
-      {left: "\\[", right: "\\]", display: true},
-      {left: "\\(", right: "\\)", display: false}
-    ];
-    katex_options.macros = {
-      "\\ket": "\\left| #1 \\right\\rangle"
-    };
-  </script>
+
   <!-- Set size on mobile -->
   <!-- https://stackoverflow.com/questions/16387400/getting-the-right-font-size-on-every-mobile-device/16387418 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Edit To Do</title>
 </head>
 
-<body onload="load_editing_todo()">
+<body>
+<!--Add buttons to initiate auth sequence and sign out-->
+<button id="authorize_button" style="display: none;">Authorize</button>
+<button id="signout_button" style="display: none;">Sign Out</button>
   <div id="overlay" class="fade"></div>
 
   <div id="todo" class="wide_area fade">
@@ -58,6 +40,36 @@
       </li>
     </ul>
   </div>
+  <!-- List Sorting -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
+  <script type = "text/javascript" src = "backgrounds.json"></script>
+  <script type = "text/javascript" src = "notes.js"></script>
+  <script type = "text/javascript" src = "scrapers.js"></script>
+  <script type = "text/javascript" src = "utils.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script>
+  <script type="text/javascript">
+    let katex_options = new Object();
+    katex_options.delimiters =  [
+      {left: "$", right: "$", display: false},
+      {left: "$$", right: "$$", display: true},
+      {left: "\\[", right: "\\]", display: true},
+      {left: "\\(", right: "\\)", display: false}
+    ];
+    katex_options.macros = {
+      "\\ket": "\\left| #1 \\right\\rangle"
+    };
+  </script>
+
+  <script async defer src="https://apis.google.com/js/api.js"
+    onload="this.onload=function(){};handleClientLoad()"
+    onreadystatechange="if (this.readyState === 'complete') this.onload()">
+  </script>
+  <script type="text/javascript">
+    function google_sheets_initial_call() {
+      load_editing_todo();
+    }; 
+  </script>
 
 </body>
 </html>
