@@ -1,4 +1,4 @@
-function getBackground(){
+function get_background() {
     let background_data = g_backgrounds[Math.floor(Math.random() * g_backgrounds.length)];
     let background = "url(\"" +background_data["url"] +"\")";
 
@@ -12,4 +12,4 @@ function getBackground(){
     };
 }
 
-getBackground();
+get_background();
