@@ -1,5 +1,117 @@
 /* Depends on KaTeX */
 
+// Client ID and API key from the Developer Console
+let CLIENT_ID = '146075693051-k890p7lhoh0gc19aukn9errckjarapkh.apps.googleusercontent.com';
+let API_KEY = 'AIzaSyAQV5RVTyHO0UJ1vWXqwaVuwe9c7vYMSsg';
+
+// Array of API discovery doc URLs for APIs used by the quickstart
+let DISCOVERY_DOCS = ["https://sheets.googleapis.com/$discovery/rest?version=v4"];
+
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+let SCOPES = "https://www.googleapis.com/auth/spreadsheets";
+
+let authorizeButton;
+let signoutButton;
+
+/**
+ *  On load, called to load the auth2 library and API client library.
+ */
+function handleClientLoad() {
+  authorizeButton = document.getElementById('authorize_button');
+  signoutButton = document.getElementById('signout_button');
+  gapi.load('client:auth2', initClient);
+}
+
+/**
+ *  Initializes the API client library and sets up sign-in state
+ *  listeners.
+ */
+function initClient() {
+  gapi.client.init({
+    apiKey: API_KEY,
+    clientId: CLIENT_ID,
+    discoveryDocs: DISCOVERY_DOCS,
+    scope: SCOPES
+  }).then(function () {
+    // Listen for sign-in state changes.
+    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+    // Handle the initial sign-in state.
+    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+    authorizeButton.onclick = handleAuthClick;
+    signoutButton.onclick = handleSignoutClick;
+  });
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+  if (isSignedIn) {
+    authorizeButton.style.display = 'none';
+    signoutButton.style.display = 'block';
+    console.log('here');
+    load_todos();
+  } else {
+    authorizeButton.style.display = 'block';
+    signoutButton.style.display = 'none';
+  }
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick(event) {
+  gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick(event) {
+  gapi.auth2.getAuthInstance().signOut();
+}
+
+/**
+ * Append a pre element to the body containing the given message
+ * as its text node. Used to display the results of the API call.
+ *
+ * @param {string} message Text to be placed in pre element.
+ */
+function appendPre(message) {
+  // let pre = document.getElementById('content');
+  // let textContent = document.createTextNode(message + '\n');
+  // pre.appendChild(textContent);
+  console.log(message);
+}
+
+/**
+ * Print the names and majors of students in a sample spreadsheet:
+ * https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
+ */
+function listMajors() {
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheetId: '1iBMVMUCkargJfssoeFJf-LmugebBcOtOOvXS4TDQGoY',
+    range: 'TODO!A2:C',
+  }).then(function(response) {
+    let range = response.result;
+    if (range.values.length > 0) {
+      for (i = 0; i < range.values.length; i++) {
+        let row = range.values[i];
+        // Print columns A and E, which correspond to indices 0 and 4.
+        appendPre(row[0] + ', ' + row[2]);
+      }
+    } else {
+      appendPre('No data found.');
+    }
+  }, function(response) {
+    appendPre('Error: ' + response.result.error.message);
+  });
+}
+
+
 // https://stackoverflow.com/questions/12460378/how-to-get-json-from-url-in-javascript
 function getJSON(url, options) {
 	let message = "";
@@ -75,6 +187,9 @@ function make_sortable(el, my_handle) {
 	});
 }
 
+let todo_sheet_id = '1iBMVMUCkargJfssoeFJf-LmugebBcOtOOvXS4TDQGoY';
+let todo_sheet_range = 'TODO!A2:D';
+
 function display_note(note) {
 	// <li class="post note_post draggable_post">
 	// 	<div class="note_handle"> </div>
@@ -107,7 +222,7 @@ function display_note(note) {
 	li.appendChild(button);
 }
 
-function display_todo(todo) {
+function display_todo(id, date, task) {
 	if (todo.done == 0) {
 		let li = document.createElement("li");
 		li.className = "post draggable_post";
@@ -117,13 +232,13 @@ function display_todo(todo) {
 
 		let text = document.createElement("div");
 		text.className = "todo_content";
-		text.innerHTML = todo.text;
+		text.innerHTML = task;
 
 		let button = document.createElement("button");
 		button.className = "button";
 		button.innerHTML = "Edit";
 		button.addEventListener("click", function() {
-			window.location = "edit_todo.html?id=" + todo.id;
+			window.location = "edit_todo.html?id=" + id;
 		});
 
 		let checkbox = document.createElement("div");
@@ -173,10 +288,29 @@ function load_notes() {
 }
 
 function load_todos() {
-	load_data("todo_list", "todo_list", ".todo_handle", display_todo);
+  console.log('loading_todos');
+  gapi.client.sheets.spreadsheets.values.get({
+    spreadsheet_id: todo_sheet_id,
+    range: todo_sheet_range,
+  }).then(function(response) {
+    let range = response.result;
+    if (range.values.length > 0) {
+      for (i = 0; i < range.values.length; i++) {
+        let row = range.values[i];
+        if(row[2] != "Yes") {
+          display_todo(row[0], row[1], row[3]);
+        }
+      }
+    } else {
+      appendPre('No data found.');
+    }
+  }, function(response) {
+    appendPre('Error: ' + response.result.error.message);
+  });
 }
 
 function load_from_server() {
+    console.log('loading_from_server');
 	load_notes();
 	load_todos();
 }
@@ -184,7 +318,7 @@ function load_from_server() {
 function generate_query_string(obj) {
 	let query_string = "";
 	for (let property in obj) {
-		query_string = query_string.concat("&" + property 
+		query_string = query_string.concat("&" + property
 							+ "=" + encodeURIComponent(obj[property]));
 	}
 	return query_string.substring(1);
@@ -245,7 +379,7 @@ function load_editing_note() {
 }
 
 function load_editing_todo() {
-	load_editing_data("todo_list", preview_todo);	
+	load_editing_data("todo_list", preview_todo);
 }
 
 function delete_data(table_name) {
@@ -267,7 +401,7 @@ function save_note() {
 	if ('id' in vars) {
 		add_note(text, vars.id);
 	} else {
-		add_note(text);		
+		add_note(text);
 	}
 	preview_note();
 }
@@ -278,7 +412,7 @@ function save_todo() {
 	if ('id' in vars) {
 		add_todo(text, vars.id);
 	} else {
-		add_todo(text);		
+		add_todo(text);
 	}
 	preview_todo();
 }

@@ -7,6 +7,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
 	<script type = "text/javascript" src = "backgrounds.json"></script>
 	<script type = "text/javascript" src = "scripts.js"></script>
+	<script type = "text/javascript" src = "sheets.js"></script>
 	<link rel="stylesheet" type="text/css" href="formatting.css">
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
@@ -31,7 +32,10 @@
 
 	<title>Home</title>
 </head>
-<body onload="getBackground();load_from_server();load_posts();">
+<body onload="getBackground();load_posts();">
+<!--Add buttons to initiate auth sequence and sign out-->
+<button id="authorize_button" style="display: none;">Authorize</button>
+<button id="signout_button" style="display: none;">Sign Out</button>
 	<div id="overlay" class="fade"></div>
 
 	<div id="notes" class="wide_area">
@@ -56,14 +60,23 @@
 
 	<div class="group">
 		<div id="AskReddit_panel" class="post_area">
-			<a href="https://www.reddit.com/r/AskReddit" class="no_underline"><div class="section_header reddit_header">AskReddit</div></a>
+			<a href="https://www.reddit.com/r/AskReddit" class="no_underline">
+                          <div class="section_header reddit_header">AskReddit</div>
+                        </a>
 			<div id="AskReddit_posts" class="list_wrapper invisible fade"></div>
 		</div>
 
 		<div id="hackernews_panel" class="post_area">
-			<a href="https://news.ycombinator.com/news" class="no_underline"><div class="section_header hackernews_header">HackerNews</div></a>
+			<a href="https://news.ycombinator.com/news" class="no_underline">
+                          <div class="section_header hackernews_header">HackerNews</div>
+                        </a>
 			<div id="hackernews_posts" class="list_wrapper invisible fade"></div>
 		</div>
 	</div>
+
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
 </body>
 </html>
