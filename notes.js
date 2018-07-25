@@ -52,7 +52,6 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     authorizeButton.style.display = 'none';
     signoutButton.style.display = 'block';
-    console.log('here');
     load_todos();
   } else {
     authorizeButton.style.display = 'block';
@@ -290,7 +289,7 @@ function load_notes() {
 function load_todos() {
   console.log('loading_todos');
   gapi.client.sheets.spreadsheets.values.get({
-    spreadsheet_id: todo_sheet_id,
+    spreadsheetId: todo_sheet_id,
     range: todo_sheet_range,
   }).then(function(response) {
     let range = response.result;
