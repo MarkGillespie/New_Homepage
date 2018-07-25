@@ -22,13 +22,6 @@ button {
         float:right;
 }
 
-button {
-	background-color: rgba(255, 255, 255, 0.3);
-        border-width: 0;
-	cursor: pointer;
-        float:right;
-}
-
 #overlay{
   position:absolute;
   top:0;
@@ -48,8 +41,6 @@ button {
 
 
 a.no_underline {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   text-decoration: none;
 }
 
@@ -63,23 +54,19 @@ a.no_underline {
   box-sizing: border-box;
   display: flex;
   flex-flow: column;
-=======
-=======
->>>>>>> Stashed changes
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .post_area {
-	height: 95vh;
-	width: 48%;
-	background-color: rgba(255, 255, 255, 0.3);
-	padding: 1vw;
-	margin: 1%;
-	float: right;
-	box-sizing: border-box;
-	display: flex;
-	flex-flow: column;
->>>>>>> Stashed changes
+  height: 95vh;
+  width: 48%;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 1vw;
+  margin: 1%;
+  float: right;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
 }
 
 .post_area .section_header {
@@ -91,7 +78,6 @@ a.no_underline {
 }
 
 .wide_area {
-<<<<<<< Updated upstream
   max-height: 95vh;
   width: 46vw;
   background-color: rgba(255, 255, 255, 0.3);
@@ -105,24 +91,19 @@ a.no_underline {
 
 .wide_area .section_header {
   flex: 0 1 auto;
-=======
-	max-height: 95vh;
-	width: 46vw;
-	background-color: rgba(255, 255, 255, 0.3);
-	padding: 1vw;
-	margin: 1vw;
-	float: left;
-	box-sizing: border-box;
-	display: flex;
-	flex-flow: column;
+  max-height: 95vh;
+  width: 46vw;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 1vw;
+  margin: 1vw;
+  float: left;
+  box-sizing: border-box;
+  display: flex;
+  flex-flow: column;
 }
 
 .wide_area .section_header {
-	flex: 0 1 auto;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+  flex: 0 1 auto;
 }
 
 .wide_area .list_wrapper {
@@ -181,16 +162,8 @@ a.no_underline {
 }
 
 .reddit_header {
-<<<<<<< Updated upstream
   background-color: orangered;
   border-top: 0.25em solid #FF8540;
-=======
-	background-color: orangered;
-	border-top: 0.25em solid #FF8540;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }
 
 .notes_header {
@@ -213,16 +186,8 @@ a.no_underline {
 }
 
 #todo_list {
-<<<<<<< Updated upstream
   padding: 0;
   padding-bottom: 1em;  
-=======
-	padding: 0;
-	padding-bottom: 1em;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }
 
 .wide_area::-webkit-scrollbar {
@@ -231,18 +196,9 @@ a.no_underline {
 }
 
 .list_wrapper {
-<<<<<<< Updated upstream
   max-height: 100%;
   overflow: scroll;
   overflow-x: hidden; 
-=======
-	max-height: 100%;
-	overflow: scroll;
-	overflow-x: hidden;
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 }
 
 .list_wrapper::-webkit-scrollbar {
@@ -264,15 +220,7 @@ a.no_underline {
 }
 
 .reddit_post {
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   border-top: 0.25em solid orangered; 
-=======
-	border-top: 0.25em solid orangered;
->>>>>>> Stashed changes
-=======
-	border-top: 0.25em solid orangered;
->>>>>>> Stashed changes
 }
 
 .note_handle {
