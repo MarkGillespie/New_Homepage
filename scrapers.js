@@ -122,6 +122,8 @@ function load_and_display_hn_post(post_index) {
 
 function load_hackernews(n_posts) {
   let process_posts = function(err, posts) {
+    document.getElementById("hackernews_posts").style.display = "block";
+    document.getElementById("hackernews_spinner").style.display = "none";
     if (err !== null) {
       alert('Something went wrong: ' + err);
     } else {
@@ -129,7 +131,6 @@ function load_hackernews(n_posts) {
         load_and_display_hn_post(posts[post]);
       }
       document.getElementById("hackernews_posts").style.opacity = 1.0;
-      document.getElementById("hackernews_spinner").style.display = "none";
     }
   }
 
@@ -173,6 +174,8 @@ function display_reddit_post(post, subreddit) {
 
 function load_subreddit(subreddit, n_posts){
   let process_posts = function(err, posts) {
+    document.getElementById(subreddit + "_posts").style.display = "block";
+    document.getElementById(subreddit + "_spinner").style.display = "none";
     if (err !== null) {
       alert('Something went wrong: ' + err);
     } else {
@@ -180,7 +183,6 @@ function load_subreddit(subreddit, n_posts){
         display_reddit_post(posts.data.children[post].data, subreddit);
       }
       document.getElementById(subreddit + "_posts").style.opacity = 1.0;
-      document.getElementById(subreddit + "_spinner").style.display = "none";
     }
   }
 

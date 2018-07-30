@@ -220,6 +220,7 @@ function load_notes() {
       make_sortable(document.getElementById("note_list"), "note_handle");
       /* Fades list in. List must start invisible */
       document.getElementById("note_list").style.opacity = 1.0;
+      document.getElementById("note_list").style.display = "block";
       document.getElementById("note_spinner").style.display = "none";
   };
 
@@ -238,6 +239,7 @@ function load_todos() {
     make_sortable(document.getElementById("todo_list"), "todo_handle");
     /* Fades list in. List must start invisible */
     document.getElementById("todo_list").style.opacity = 1.0;
+    document.getElementById("todo_list").style.display = "block";
     document.getElementById("todo_spinner").style.display = "none";
   };
 
