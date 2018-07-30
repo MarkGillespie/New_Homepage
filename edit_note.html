@@ -11,9 +11,6 @@
 </head>
 
 <body>
-<!--Add buttons to initiate auth sequence and sign out-->
-<button id="authorize_button" style="display: none;">Authorize</button>
-<button id="signout_button" style="display: none;">Sign Out</button>
   <div id="overlay" class="fade"></div>
 
   <div id="notes" class="wide_area fade">
@@ -38,6 +35,11 @@
         <div id="preview" class="note_content"></div>
       </li>
     </ul>
+  </div>
+  <div class="footer">
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
   </div>
 
   <!-- List Sorting -->
