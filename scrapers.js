@@ -129,6 +129,7 @@ function load_hackernews(n_posts) {
         load_and_display_hn_post(posts[post]);
       }
       document.getElementById("hackernews_posts").style.opacity = 1.0;
+      document.getElementById("hackernews_spinner").style.display = "none";
     }
   }
 
@@ -179,6 +180,7 @@ function load_subreddit(subreddit, n_posts){
         display_reddit_post(posts.data.children[post].data, subreddit);
       }
       document.getElementById(subreddit + "_posts").style.opacity = 1.0;
+      document.getElementById(subreddit + "_spinner").style.display = "none";
     }
   }
 
