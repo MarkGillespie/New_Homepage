@@ -32,6 +32,68 @@ button {
   -webkit-transition: opacity .25s ease-in-out;
 }
 
+.spinner {
+  width: 10em;
+  height: 10em;
+  margin: auto;
+  position: relative;
+}
+
+@keyframes ripple_pos {
+  0% {
+    transform: translate(4.5em, 4.5em);
+    width: 10%;
+    height: 10%;
+    border-width: 0.5em;
+  }
+
+  50% {
+    transform: translate(0, 0);
+    width: 100%;
+    height: 100%;
+    border-width: 0.25em;
+  }
+}
+
+@keyframes ripple_color {
+  0% {
+    border-color: rgba(255, 255, 255, 0.0);
+  }
+
+  20% {
+    border-color: rgba(255, 255, 255, 0.8);
+  }
+
+  50% {
+    border-color: rgba(255, 255, 255, 0.0);
+  }
+}
+
+.circle1, .circle2, .circle3{
+  position: absolute;
+  box-sizing: border-box; /* display border inside div so that spacing comutations work out */
+  border-style: solid;
+  border-radius: 50%;
+  border-color: rgba(255, 255, 255, 0.0);
+  animation-name: ripple_pos, ripple_color;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-out;
+}
+
+.circle1 {
+  animation-delay: 0s;
+}
+
+.circle2 {
+  animation-delay: 0.2s;
+}
+
+.circle3 {
+  animation-delay: 0.4s;
+}
+
+
 .footer {
   float: left;
   width: 100%;

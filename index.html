@@ -19,6 +19,11 @@
 
     <div class="list_wrapper">
       <ul id="note_list" class="invisible fade"></ul>
+      <div class="spinner" id="note_spinner">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+      </div>
     </div>
   </div>
 
@@ -29,6 +34,11 @@
 
     <div class="list_wrapper">
       <ul id="todo_list" class="invisible fade"></ul>
+    </div>
+    <div class="spinner" id="note_spinner">
+      <div class="circle1"></div>
+      <div class="circle2"></div>
+      <div class="circle3"></div>
     </div>
   </div>
 
@@ -50,7 +60,7 @@
 
   <div class="footer">
     <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="authorize_button">Authorize</button>
     <button id="signout_button" style="display: none;">Sign Out</button>
   </div>
 
