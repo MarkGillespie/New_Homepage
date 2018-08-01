@@ -6,11 +6,28 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css"/>
   <!-- Set size on mobile -->
   <!-- https://stackoverflow.com/questions/16387400/getting-the-right-font-size-on-every-mobile-device/16387418 -->
+  <script type="text/javascript" async
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_CHTML">
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Home</title>
 </head>
 <body onload="load_posts();">
   <div id="overlay" class="fade"></div>
+
+  <div id="nlab" class="wide_area">
+    <a href="https://ncatlab.org/nlab/show/HomePage" class="no_underline">
+      <div class="section_header nlab_header"><i>n</i>Lab</div>
+    </a>
+
+    <div id="nlab_posts" class="fade">
+    </div>
+    <div class="spinner" id="nlab_spinner">
+      <div class="circle1"></div>
+      <div class="circle2"></div>
+      <div class="circle3"></div>
+    </div>
+  </div>
 
   <div id="notes" class="wide_area">
     <a href="edit_note.html" class="no_underline">
@@ -79,7 +96,11 @@
   <!-- List Sorting -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
   <script type = "text/javascript" src = "backgrounds.json"></script>
+  <script type = "text/javascript" src = "nlab_pages.json"></script>
   <script type = "text/javascript" src = "loaders.min.js"></script>
+  <!--<script type = "text/javascript" src = "utils.js"></script>-->
+  <!--<script type = "text/javascript" src = "scrapers.js"></script>-->
+  <!--<script type = "text/javascript" src = "notes.js"></script>-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script>
   <script type="text/javascript">

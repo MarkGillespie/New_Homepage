@@ -200,6 +200,11 @@ a.no_underline {
   border-top: 0.25em solid #FF8540;
 }
 
+.nlab_header {
+  background-color: #008B26;
+  border-top: 0.25em solid #03bd36;
+}
+
 .notes_header {
   background-color: #9F509F;
   border-top: 0.25em solid #BD75BF;
@@ -247,6 +252,31 @@ a.no_underline {
   text-align: left;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   color: #111;
+}
+
+#nlab_posts {
+  opacity: 0.0;
+}
+
+.nlab_post {
+  border-top: 0.25em solid #008B26;
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+
+.nlab_post::-webkit-scrollbar {
+  width: 0px;  /* remove scrollbar space */
+  background: transparent; /* make scrollbar transparent */
+}
+
+/* any <a> descendant of a .nlab_post */
+.nlab_post a {
+  color: #005000;
+}
+
+.nlab_post a:hover {
+  background-color: #008;
+  color: #fff;
 }
 
 .hackernews_post {
@@ -347,8 +377,24 @@ a.no_underline {
   color: #888;
 }
 
-.details {
+.nlab_post_heading {
+  padding: 1em 1em 0em 1em;
+  color: #008B26;
+}
+
+.nlab_post_heading:hover {
+  background-color: #D7D7D7;
+}
+
+.nlab_title {
+  margin: 0;
+}
+
+.details, .post_body {
   padding: 0em 1.2em 1.2em 1.2em; /* 0.8 * 1.2 = 1 */
+}
+
+.details {
   font-size: 0.8em;
   color: #333;
 }
@@ -357,13 +403,17 @@ a.no_underline {
   color: #888;
 }
 
+.post_body {
+
+}
+
 .button {
   color: #666;
   font-size: 1em;
   cursor: pointer;
   background-color: Transparent;
   border: none;
-    overflow: hidden;
+  overflow: hidden;
   outline: none;
   width: 100%;
   padding-right: 1em;
