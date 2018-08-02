@@ -266,7 +266,9 @@ function load_nlab_page(title, url) {
       // Find the first child of the 'revision' div which is not the title or
       // table of contents
       let node = html.getElementById('revision').childNodes[0];
-      while(node && node.id !== 'contents' && node.className !== 'maruku_toc') {
+      while(node && node.id !== 'contents'
+                 && node.className !== 'rightHandSide'
+                 && node.className !== 'maruku_toc') {
         node = node.nextSibling;
       }
       let nodes_list = [];
