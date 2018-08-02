@@ -264,15 +264,27 @@ function load_nlab_page(title, url) {
 
       // Find the first child of the 'revision' div which is not the title or
       // table of contents or #text (which seems to represent a line break)
-      let node = html.getElementById('revision').childNodes[0];
+      let node;
+
+      // First, try to find the table of contents. If so, take the next child
+      let toc_list = html.getElementById('revision').getElementsByClassName('maruku_toc');
+      console.log(toc_list)
+      if (toc_list.length > 0) {
+        node = toc_list[0].nextSibling;
+      } else {
+      // Otherwise, just loop through the nodes from the beginning
+        node = html.getElementById('revision').childNodes[0];
+      }
+      console.log(html.getElementById('revision').childNodes);
+
+      // Skip over blockquotes, #text (line breaks), and right-hand-side menus
       while(node && (
-            node.id == 'contents'
-              || node.className == 'rightHandSide'
+            node.className == 'rightHandSide'
               || node.nodeName == '#text'
-              || node.tagName == 'blockquote'
-              || node.className == 'maruku_toc')) {
+              || node.tagName == 'blockquote')) {
         node = node.nextSibling;
       }
+      console.log('node', node)
       let nodes_list = [];
       if (node) {
         nodes_list = [node];
