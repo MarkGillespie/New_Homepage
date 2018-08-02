@@ -255,7 +255,6 @@ function display_nlab_page(page) {
 }
 
 function load_nlab_page(title, url) {
-  console.log(title, url);
   let process_page = function(err, page) {
     if (err !== null) {
       alert('Something went wrong: ' + err);
@@ -266,21 +265,19 @@ function load_nlab_page(title, url) {
       // Find the first child of the 'revision' div which is not the title or
       // table of contents or #text (which seems to represent a line break)
       let node = html.getElementById('revision').childNodes[0];
-      console.log(html.getElementById('revision').childNodes);
-      console.log('node', node, node.nodeName);
       while(node && (
             node.id == 'contents'
               || node.className == 'rightHandSide'
               || node.nodeName == '#text'
+              || node.tagName == 'blockquote'
               || node.className == 'maruku_toc')) {
-        console.log('node', node);
         node = node.nextSibling;
       }
       let nodes_list = [];
       if (node) {
         nodes_list = [node];
         node = node.nextSibling;
-        while(node && node.tagName !== 'h2') {
+        while(node && node.tagName !== 'h1' && node.tagName !== 'h2') {
           nodes_list.push(node);
           node = node.nextSibling;
         }
@@ -300,14 +297,10 @@ function load_nlab_page(title, url) {
 }
 
 function load_nlab() {
-  console.log(nlab_pages);
   let pages = Object.keys(nlab_pages);
   let rand_page = pages[Math.floor(Math.random() * pages.length)];
   let url = nlab_pages[rand_page];
-  console.log(url);
   load_nlab_page(rand_page, url);
-
-  //getHTML('http://ncatlab.org/nlab/all_pages', {callback:process_page_list});
 }
 
 function load_posts() {
