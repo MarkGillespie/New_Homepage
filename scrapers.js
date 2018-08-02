@@ -67,7 +67,7 @@ function time_ago(utc /* time in milliseconds */){
     time_num = Math.floor(elapsed_minutes / (60 * 24));
     time_word = 'day';
   } else {
-    /* For months and years, I don't want to be as precise, so 
+    /* For months and years, I don't want to be as precise, so
      * I just subtract the current one from the past one to get the
      * time elapsed */
     let months = now.getMonth() - then.getMonth();
@@ -217,7 +217,7 @@ function load_subreddit(subreddit, n_posts){
 
 //**************************************************************************************
 //
-// nCatLab 
+// nCatLab
 //
 //**************************************************************************************
 
@@ -245,9 +245,9 @@ function display_nlab_page(page) {
   post_body.className = 'post_body';
 
   page.contents.forEach(function(node) {
-    post_body.appendChild(node); 
+    post_body.appendChild(node);
   });
-    
+
   document.getElementById('nlab_posts').appendChild(wrapper);
   wrapper.appendChild(post_link);
   wrapper.appendChild(post_body);
@@ -255,20 +255,18 @@ function display_nlab_page(page) {
 }
 
 function load_nlab_page(title, url) {
-  console.log(title, url);  
+  console.log(title, url);
   let process_page = function(err, page) {
     if (err !== null) {
-      alert('Something went wrong: ' + err); 
+      alert('Something went wrong: ' + err);
     } else {
       let parser = new DOMParser();
       let html = parser.parseFromString(page, 'text/xml');
 
-      // Find the first child of the 'revision' div which is an h2
-      // This is the header of the first section of the page
-      // We do so by looping through the children until we find one 
-      //   with tag h2
+      // Find the first child of the 'revision' div which is not the title or
+      // table of contents
       let node = html.getElementById('revision').childNodes[0];
-      while(node && node.tagName !== 'h2') {
+      while(node && node.id !== 'contents' && node.className !== 'maruku_toc') {
         node = node.nextSibling;
       }
       let nodes_list = [];
@@ -284,7 +282,7 @@ function load_nlab_page(title, url) {
         alert('Something went wrong: nlab page + ' + url + ' has no content') ;
       } else {
         document.getElementById('nlab_spinner').style.display = 'none';
-        display_nlab_page({'title': title, 'url': url, 'contents': nodes_list}) 
+        display_nlab_page({'title': title, 'url': url, 'contents': nodes_list})
         document.getElementById('nlab_posts').style.opacity = 1.0;
 
         MathJax.Hub.Queue(["Typeset", MathJax.Hub, "nlab"]);
