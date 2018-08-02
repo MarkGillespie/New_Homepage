@@ -264,11 +264,16 @@ function load_nlab_page(title, url) {
       let html = parser.parseFromString(page, 'text/xml');
 
       // Find the first child of the 'revision' div which is not the title or
-      // table of contents
+      // table of contents or #text (which seems to represent a line break)
       let node = html.getElementById('revision').childNodes[0];
-      while(node && node.id !== 'contents'
-                 && node.className !== 'rightHandSide'
-                 && node.className !== 'maruku_toc') {
+      console.log(html.getElementById('revision').childNodes);
+      console.log('node', node, node.nodeName);
+      while(node && (
+            node.id == 'contents'
+              || node.className == 'rightHandSide'
+              || node.nodeName == '#text'
+              || node.className == 'maruku_toc')) {
+        console.log('node', node);
         node = node.nextSibling;
       }
       let nodes_list = [];
