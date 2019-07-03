@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700|Josefin+Sans:300,300i,400,400i,600,600i,700,700i' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700|Josefin+Sans:300,300i,400,400i,600,600i,700,700i|Mate|Asul' rel='stylesheet'/>
   <link rel="stylesheet" type="text/css" href="formatting.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css"/>
   <!-- Set size on mobile -->
@@ -9,12 +9,34 @@
   <script type="text/javascript" async
     src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=MML_CHTML">
   </script>
+  <script type = "text/javascript" src = "utils.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="UTF-8">
   <title>Home</title>
 </head>
-<body onload="load_posts();">
+
+<body onload="get_background();load_posts();">
   <div id="overlay" class="fade"></div>
+
+  <div id="todo" class="wide_area">
+    <a href="edit_todo.html" class="no_underline">
+      <div class="section_header todo_header">To Do</div>
+    </a>
+    <div class="quick-to-do">
+      <textarea id="text" class="small-textbox"></textarea>
+      <button onclick="update_with_quick_todo();">Save</button>
+    </div>
+
+    <div class="list_wrapper">
+      <ul id="todo_list" class="invisible fade" style="display:none;"></ul>
+    </div>
+    <div class="spinner" id="todo_spinner">
+      <div class="circle1"></div>
+      <div class="circle2"></div>
+      <div class="circle3"></div>
+    </div>
+  </div>
+
 
   <div id="nlab" class="wide_area">
     <a href="https://ncatlab.org/nlab/show/HomePage" class="no_underline">
@@ -42,21 +64,6 @@
         <div class="circle2"></div>
         <div class="circle3"></div>
       </div>
-    </div>
-  </div>
-
-  <div id="todo" class="wide_area">
-    <a href="edit_todo.html" class="no_underline">
-      <div class="section_header todo_header">To Do</div>
-    </a>
-
-    <div class="list_wrapper">
-      <ul id="todo_list" class="invisible fade" style="display:none;"></ul>
-    </div>
-    <div class="spinner" id="todo_spinner">
-      <div class="circle1"></div>
-      <div class="circle2"></div>
-      <div class="circle3"></div>
     </div>
   </div>
 
@@ -96,12 +103,12 @@
 
   <!-- List Sorting -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
-  <script type = "text/javascript" src = "backgrounds.json"></script>
-  <script type = "text/javascript" src = "nlab_pages.json"></script>
-  <script type = "text/javascript" src = "loaders.min.js"></script>
-  <!--<script type = "text/javascript" src = "utils.js"></script>-->
-  <!--<script type = "text/javascript" src = "scrapers.js"></script>-->
-  <!--<script type = "text/javascript" src = "notes.js"></script>-->
+  <script type = "text/javascript" src = "backgrounds.js"></script>
+  <script type = "text/javascript" src = "some_nlab_pages.js"></script>
+  <!--<script type = "text/javascript" src = "nlab_pages.js"></script>-->
+  <!--<script type = "text/javascript" src = "loaders.min.js"></script>-->
+  <script type = "text/javascript" src = "scrapers.js"></script>
+  <script type = "text/javascript" src = "notes.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script>
   <script type="text/javascript">

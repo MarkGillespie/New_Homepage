@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700|Josefin+Sans:300,300i,400,400i,600,600i,700,700i' rel='stylesheet'/>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,700|Josefin+Sans:300,300i,400,400i,600,600i,700,700i|Mate|Asul' rel='stylesheet'/>
   <link rel="stylesheet" type="text/css" href="formatting.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.css"/>
   <!-- Set size on mobile -->
   <!-- https://stackoverflow.com/questions/16387400/getting-the-right-font-size-on-every-mobile-device/16387418 -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <script type = "text/javascript" src = "utils.js"></script>
   <title>Edit Note</title>
 </head>
 
-<body>
+<body onload="get_background();">
   <div id="overlay" class="fade"></div>
 
   <div id="notes" class="wide_area fade">
     <div class="section_header notes_header">Edit Note</div>
     <textarea id="text" class="textbox"></textarea>
     <div class="button_area">
-      <span class="button" onclick="save_note()">Save</span>
-      <span class="button" onclick="preview_note()">Preview</span>
+      <button class="button" onclick="save_note()">Save</button>
+      <button class="button" onclick="preview_note()">Preview</button>
       <a href="index.html" class="no_underline">
-        <span class="button">Exit</span>
+        <button class="button">Exit</span>
       </a>
-      <span class="button" onclick="delete_note()">Delete</span>
+      <button class="button" onclick="delete_note()">Delete</button>
     </div>
   </div>
 
@@ -44,8 +46,9 @@
 
   <!-- List Sorting -->
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.6.1/Sortable.min.js"></script>
-  <script type = "text/javascript" src = "backgrounds.json"></script>
-  <script type = "text/javascript" src = "loaders.min.js"></script>
+  <script type = "text/javascript" src = "backgrounds.js"></script>
+  <script type = "text/javascript" src = "scrapers.js"></script>
+  <script type = "text/javascript" src = "notes.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/katex.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.8.3/contrib/auto-render.min.js"></script>
   <script type="text/javascript">

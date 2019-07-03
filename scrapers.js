@@ -5,7 +5,7 @@ function getHTML(site_url, options) {
     callback = options.callback;
   }
   // Bypass cross origin problems
-  let url = 'https://allorigins.me/get?&url=' + encodeURIComponent(site_url);
+  let url = 'https://anyorigin.com/go?url=' + site_url;
   let xhr = new XMLHttpRequest();
   xhr.open('GET', url);
   xhr.responseType = 'json';
@@ -244,9 +244,7 @@ function display_nlab_page(page) {
   //let when = time_ago(post.created_utc * 1000);
   post_body.className = 'post_body';
 
-  page.contents.forEach(function(node) {
-    post_body.appendChild(node);
-  });
+  post_body.innerHTML = page.contents;
 
   document.getElementById('nlab_posts').appendChild(wrapper);
   wrapper.appendChild(post_link);
@@ -254,65 +252,26 @@ function display_nlab_page(page) {
   post_link.appendChild(title);
 }
 
-function load_nlab_page(title, url) {
-  let process_page = function(err, page) {
-    if (err !== null) {
-      alert('Something went wrong: ' + err);
-    } else {
-      let parser = new DOMParser();
-      let html = parser.parseFromString(page, 'text/xml');
+function load_nlab_page(title, url, content) {
+  document.getElementById('nlab_spinner').style.display = 'none';
+  display_nlab_page({'title': title, 'url': url, 'contents': nodes_list})
+  document.getElementById('nlab_posts').style.opacity = 1.0;
 
-      // Find the first child of the 'revision' div which is not the title or
-      // table of contents or #text (which seems to represent a line break)
-      let node;
-
-      // First, try to find the table of contents. If so, take the next child
-      let toc_list = html.getElementById('revision').getElementsByClassName('maruku_toc');
-      console.log(toc_list)
-      if (toc_list.length > 0) {
-        node = toc_list[0].nextSibling;
-      } else {
-      // Otherwise, just loop through the nodes from the beginning
-        node = html.getElementById('revision').childNodes[0];
-      }
-      console.log(html.getElementById('revision').childNodes);
-
-      // Skip over blockquotes, #text (line breaks), and right-hand-side menus
-      while(node && (
-            node.className == 'rightHandSide'
-              || node.nodeName == '#text'
-              || node.tagName == 'blockquote')) {
-        node = node.nextSibling;
-      }
-      console.log('node', node)
-      let nodes_list = [];
-      if (node) {
-        nodes_list = [node];
-        node = node.nextSibling;
-        while(node && node.tagName !== 'h1' && node.tagName !== 'h2') {
-          nodes_list.push(node);
-          node = node.nextSibling;
-        }
-      }
-      if (nodes_list.length < 2) {
-        alert('Something went wrong: nlab page + ' + url + ' has no content') ;
-      } else {
-        document.getElementById('nlab_spinner').style.display = 'none';
-        display_nlab_page({'title': title, 'url': url, 'contents': nodes_list})
-        document.getElementById('nlab_posts').style.opacity = 1.0;
-
-        MathJax.Hub.Queue(["Typeset", MathJax.Hub, "nlab"]);
-      }
-    }
-  }
-  getHTML(url, {callback:process_page});
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "nlab"]);
 }
 
 function load_nlab() {
   let pages = Object.keys(nlab_pages);
   let rand_page = pages[Math.floor(Math.random() * pages.length)];
-  let url = nlab_pages[rand_page];
-  load_nlab_page(rand_page, url);
+  let url = nlab_pages[rand_page][0];
+  let content = nlab_pages[rand_page][1];
+  //load_nlab_page(rand_page, url, content);
+
+  document.getElementById('nlab_spinner').style.display = 'none';
+  display_nlab_page({'title': rand_page, 'url': url, 'contents': content})
+  document.getElementById('nlab_posts').style.opacity = 1.0;
+
+  MathJax.Hub.Queue(["Typeset", MathJax.Hub, "nlab"]);
 }
 
 function load_posts() {

@@ -396,7 +396,10 @@ function save_todo() {
   } else {
     create_new_todo(text);
   }
-  preview_todo();
+
+  if (document.getElementById("preview")) {
+    preview_todo();
+  }
 }
 
 function preview_note() {
@@ -409,4 +412,14 @@ function preview_todo() {
   let text = document.getElementById("text").value;
   document.getElementById("preview").innerHTML = text;
   renderMathInElement(document.getElementById("todo_list"), katex_options);
+}
+
+function update_with_quick_todo() {
+  save_todo();
+  document.getElementById("text").value = "";
+  setTimeout(function() {
+    document.getElementById("todo_list").innerHTML = "";
+    load_todos();
+  }, 500);
+
 }

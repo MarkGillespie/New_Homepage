@@ -7,9 +7,9 @@ function get_background() {
 
     downloadingImage.onload = function(){
         document.body.style.backgroundImage = background;
-        let overlay = document.getElementById("overlay");
-        overlay.style.opacity = 0;
+        setTimeout(function() {
+          let overlay = document.getElementById("overlay");
+          overlay.style.opacity = 0;
+        }, 100);
     };
 }
-
-get_background();

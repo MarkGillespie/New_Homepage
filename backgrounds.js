@@ -24,24 +24,8 @@ var g_backgrounds = [
         "author": "Joe Azure"
     },
     {
-        "url": "https://lh3.googleusercontent.com/-ciHScPkPIjY/USd_CK03c5I/AAAAAAAAm9o/6CWLX5P59aI/s1920-w1920-h1080-c/RayofHope.jpg",
-        "author": "Alistair Nicol"
-    },
-    {
-        "url": "https://lh5.googleusercontent.com/-dXBA-gHPDPU/UPSOYTL_lpI/AAAAAAAALn4/jH17jwSZeYk/s1920-w1920-h1080-c/Dare%2Bto%2BDream.jpg",
-        "author": "Dave Morrow"
-    },
-    {
-        "url": "https://lh4.googleusercontent.com/-JvGl0iUdb58/UfvkbbsvXtI/AAAAAAAAaJc/1aANEbTHeK4/s1920-w1920-h1080-c/DSC_1644-Edit-Edit-Edit-Edit.JPG",
-        "author": "Alistair Nicol"
-    },
-    {
         "url": "https://lh4.googleusercontent.com/-ePzy0PYNkjY/ToE9F9iPxKI/AAAAAAAAsWg/o7LkkqWEs2o/s1920-w1920-h1080-c/DSC01079%2B%25281%2529.JPG",
         "author": "Gretchen Chappelle"
-    },
-    {
-        "url": "https://lh5.googleusercontent.com/-5inyrU95-M4/UTrLw33X2FI/AAAAAAAAdvw/A48rORvWG_g/s1920-w1920-h1080-c/20130307-%252812_35_23%2529-tahoe-iq180-16274.jpg",
-        "author": "Aravind Krishnaswamy"
     },
     {
         "url": "https://lh4.googleusercontent.com/-pnosgcd6G2c/UbheNBeniVI/AAAAAAAAWp0/hSEX3IwAgyI/s1920-w1920-h1080-c/DSC_8492_HDR-Edit.JPG",
@@ -90,10 +74,6 @@ var g_backgrounds = [
     {
         "url": "https://lh5.googleusercontent.com/-teMxOetSsy0/TwNDboHbM0I/AAAAAAABFao/F9yQHylkRdo/s1920-w1920-h1080-c/RodeoBeach-firespinning-2.jpg",
         "author": "Joe Azure"
-    },
-    {
-        "url": "https://lh5.googleusercontent.com/-G_wJmFcGDaM/UeAGqoSizxI/AAAAAAAAYwo/OrQTf8ec-3o/s1920-w1920-h1080-c/calm%2Bbefore.jpg",
-        "author": "Alistair Nicol"
     },
     {
         "url": "https://lh5.googleusercontent.com/-rF8zodn1xAI/U_yjoZyDgcI/AAAAAAAB-38/U62D7hi4-NU/s1920-w1920-h1080-c/20140204_Iceland_0234_5_6_32bit.jpg",
