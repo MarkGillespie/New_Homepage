@@ -499,4 +499,5 @@ a.no_underline {
   padding: 0.5em;;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
   color: #111;
+  margin-bottom: 0.2em;
 }
