@@ -181,7 +181,7 @@ function display_todo(row, date, task) {
     document.getElementById("todo_list").removeChild(li);
   });
 
-  document.getElementById("todo_list").appendChild(li);
+  document.getElementById("todo_list").insertBefore(li, document.getElementById("todo_list").firstChild);
   li.appendChild(handle);
   li.appendChild(text);
   text.appendChild(checkbox);
