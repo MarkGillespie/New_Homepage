@@ -260,7 +260,11 @@ function generate_query_string(obj) {
   return query_string.substring(1);
 }
 
-function insert_new_row(sheet_id, sheet_range, values) {
+function today() {
+  return new Date().toJSON().slice(0,10).replace(/-/g, '/');
+}
+
+function insert_new_row(sheet_id, sheet_range, values, callback = function(row){}) {
   let params = {
     spreadsheetId: sheet_id,
     range: sheet_range,
@@ -268,8 +272,7 @@ function insert_new_row(sheet_id, sheet_range, values) {
     insertDataOption: "INSERT_ROWS"
   };
 
-  let date = new Date().toJSON().slice(0,10).replace(/-/g, '/');
-  console.log(date);
+  let date = today();
 
   let value_range_body = {
     majorDimension: "ROWS",
@@ -277,7 +280,12 @@ function insert_new_row(sheet_id, sheet_range, values) {
   };
 
   gapi.client.sheets.spreadsheets.values.append(params, value_range_body).then(
-    function(response) {},
+    function(response) {
+      let range = response.result.tableRange;
+      let rowStr = range.substring(range.indexOf('C') + 1);
+      let row = parseInt(rowStr) + 1;
+      callback(row);
+    },
     function(response) {
         appendPre('Error: ' + response.result.error.message);
   });
@@ -288,8 +296,8 @@ function create_new_note(my_text) {
   insert_new_row(note_sheet_id, note_sheet_range, ["No", my_text]);
 }
 
-function create_new_todo(my_text) {
-  insert_new_row(todo_sheet_id, todo_sheet_range, ["No", my_text]);
+function create_new_todo(my_text, callback=function(row){}) {
+  insert_new_row(todo_sheet_id, todo_sheet_range, ["No", my_text], callback);
 }
 
 function update_sheet(sheet_id, sheet_name, row, values) {
@@ -388,13 +396,13 @@ function save_note() {
   preview_note();
 }
 
-function save_todo() {
+function save_todo(callback=function(row){}) {
   let vars = parse_query_string();
   let text = document.getElementById("text").value;
   if ('row' in vars) {
     update_todo(vars.row, text, "No");
   } else {
-    create_new_todo(text);
+    create_new_todo(text, callback);
   }
 
   if (document.getElementById("preview")) {
@@ -415,11 +423,15 @@ function preview_todo() {
 }
 
 function update_with_quick_todo() {
-  save_todo();
+  let todo_text = document.getElementById("text").value;
+  save_todo(function(row) {
+      display_todo(row, today(), todo_text);
+  });
   document.getElementById("text").value = "";
-  setTimeout(function() {
-    document.getElementById("todo_list").innerHTML = "";
-    load_todos();
-  }, 500);
+}
 
+function process_textarea(e) {
+  if (e.keyCode == 13 && !e.shiftKey) { // Enter keycode
+    update_with_quick_todo();
+  }
 }

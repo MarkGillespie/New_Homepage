@@ -23,11 +23,11 @@
       <div class="section_header todo_header">To Do</div>
     </a>
     <div class="quick-to-do">
-      <textarea id="text" class="small-textbox"></textarea>
+      <textarea id="text" class="small-textbox" onkeypress="process_textarea(event, this)"></textarea>
       <button onclick="update_with_quick_todo();">Save</button>
     </div>
 
-    <div class="list_wrapper">
+    <div class="list_wrapper" id="todo_list_wrapper">
       <ul id="todo_list" class="invisible fade" style="display:none;"></ul>
     </div>
     <div class="spinner" id="todo_spinner">
